@@ -12,11 +12,13 @@ class ComplexNumber:
         self.real = real
         self.imag = imag
 
-    def format(self):
-        if int(self.real) > 0:
+    def __str__(self):
+        if self.real > 0 and self.imag > 0:
             return f"{self.real} + {self.imag}i"
-        elif int(self.real) == 0:
+        if self.real == 0 and self.imag == 0:
+            return f"{self.real}"
+        elif self.real == 0:
             return f"{self.imag}"
-        elif int(self.imag) == 0:
+        elif self.imag == 0:
             return f"{self.real}i"
-        return f"{self.real} - {self.imag}i"
+        return f"0"

@@ -2,7 +2,15 @@
 import sys
 import re
 from variables_types import *
+from helper import *
 dict1 = {}
+
+def parserComplex(expr: str):
+    expr = re.sub("\s", "", expr)
+    print(expr)
+    pattern = r"^[+-]?i(?:\*\d*\.?\d+)?(?:[+-]\d*\.?\d+)?$|^[+-]?\d*\.?\d+(?:[+-]i(?:\*\d*\.?\d+)?)?$|^[+-]?\d*\.?\d*\*?i(?:[+-]\d*\.?\d+)?$"
+    if re.fullmatch(pattern, expr):
+       return [types.COMPLEX, expr]
 
 def getValue(varName: str):
     for key, expr in dict1.items():
@@ -11,8 +19,12 @@ def getValue(varName: str):
     print(dict1)
 
 
-def typesParser(varName:str):
+def typesParser(varName:str, expr:str):
     getValue(varName)
+    parsingType = parserComplex(expr)
+    match parsingType[0]:
+        case types.COMPLEX:
+            return ComplexNumber(2, 0)
  
 def parser(input: str):
     if input.find('=', 0) == -1 :
@@ -27,7 +39,8 @@ def parser(input: str):
         varName = input.split('=')[0]
         expr = input.split('=')[1]
         dict1[varName.lower()] = expr
-        typesParser(varName)
+        value = typesParser(varName, expr)
+        print(value)
         # print(dict1)
     else:
         print("The assignment value should'nt be empty")
