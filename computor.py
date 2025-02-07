@@ -6,11 +6,13 @@ from helper import *
 dict1 = {}
 
 def parserComplex(expr: str):
-    expr = re.sub("\s", "", expr)
-    print(expr)
-    pattern = r"^[+-]?i(?:\*\d*\.?\d+)?(?:[+-]\d*\.?\d+)?$|^[+-]?\d*\.?\d+(?:[+-]i(?:\*\d*\.?\d+)?)?$|^[+-]?\d*\.?\d*\*?i(?:[+-]\d*\.?\d+)?$"
-    if re.fullmatch(pattern, expr):
-       return [types.COMPLEX, expr]
+    withoutSpc = re.sub("\s", "", expr)
+    print(withoutSpc)
+    pattern = r"^[+-]?\d*\.?\d+(?:[+-]\d*\.?\d*\*?i)?$|^[+-]?\d*\.?\d*\*?i(?:[+-]\d*\.?\d+)?$|^[+-]?i(?:\*\d*\.?\d+)?(?:[+-]\d*\.?\d+)?$"
+
+    if re.fullmatch(pattern, withoutSpc):
+       return [types.COMPLEX, withoutSpc]
+    return expr
 
 def getValue(varName: str):
     for key, expr in dict1.items():
@@ -24,7 +26,11 @@ def typesParser(varName:str, expr:str):
     parsingType = parserComplex(expr)
     match parsingType[0]:
         case types.COMPLEX:
+            part= re.findall(r"[+-]?\d*\.?\d+i?\*?", parsingType[1])
+            print(part)
             return ComplexNumber(2, 0)
+        case _:
+            return "number or funtion or matrice"
  
 def parser(input: str):
     if input.find('=', 0) == -1 :
