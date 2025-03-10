@@ -44,7 +44,7 @@ def getval(var_name:str):
     return "not defined"
 
 def parsertype(expr: str):
-    withoutSpc = re.sub("\s", "", expr)
+    withoutSpc = re.sub(r"\s", "", expr)
     print(withoutSpc)
     pattern = r"^[+-]?\d*\.?\d+(?:[+-]\d*\.?\d*\*?i)?$|^[+-]?\d*\.?\d*\*?i(?:[+-]\d*\.?\d+)?$|^[+-]?i(?:\*\d*\.?\d+)?(?:[+-]\d*\.?\d+)?$"
 
@@ -76,12 +76,6 @@ def get_types(varName:str, expr:str):
         case _:
             return "number or funtion or matrice"
 
-def replace_in_dict(expr: str, var_name: str) :
-    for key, value in dict1.items():
-        print(f"{var_name} -- {value}")
-        if var_name.lower() == value.replace(' ', ''):
-            dict1[key] = expr
-
 def parser(input: str):
     if input.find('=', 0) == -1 :
         print("Please make an assignment")
@@ -95,20 +89,29 @@ def parser(input: str):
         varName = input.split('=')[0]
         expr = input.split('=')[1]
         parts = re.findall(r"(\w+)", expr)
-        # replace expr by his value inside dictionnary if it already exist
+        
+        # check if the variable already exist in dict and replace it in 
+        # expression by his value
+        dict1[varName.lower()] = expr
+        for key, val in dict1.items():
+            if val.replace(' ', '') == varName.replace(' ', '').lower() :
+                print("here")
+                dict1[key] = expr
+        # varInExpr = False
+        # for part in parts:
+        #     print(f" part = {part}")
+        #     if getval(part) != "not defined" :
+        #         varInExpr = True
+        #         repl = getval(part)
+        #         print(f"value {repl}")
+        #         expr = expr.replace(part, repl, len(part))
+        #         print(f"new_expr {expr}")
+        #         dict1[varName.lower()] = expr
+        # #we need to check the value of variable before assignement
+        # if varInExpr == False:
+        #     dict1[varName.lower()] = expr
         # replace_in_dict(expr, varName)
-        # replace all variable inside expression by they value if they exist already
-        new_expr = expr
-        for part in parts:
-            print(part)
-            if getval(part) != "not defined" :
-                repl = getval(part)
-                new_expr = expr.replace(part, repl, len(part))
-                dict1[varName.lower()] = new_expr
-        #we need to check the value of variable before assignement
-        dict1[varName.lower()] = new_expr
-        # replace_in_dict(expr, varName)
-        value = getValue(varName, new_expr)
+        value = getValue(varName, expr)
         # print(eval(value))
         
         # print(value)
