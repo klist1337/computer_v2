@@ -13,12 +13,26 @@ class ComplexNumber:
         self.imag = imag
 
     def __str__(self):
-        if self.real > 0 and self.imag > 0:
-            return f"{self.real} + {self.imag}i"
-        if self.real == 0 and self.imag == 0:
-            return f"{self.real}"
-        elif self.real == 0:
-            return f"{self.imag}"
-        elif self.imag == 0:
-            return f"{self.real}i"
+        if self.real < 0:
+             if self.imag < 0:
+                return f"-{abs(self.real)} - {abs(self.imag)}i"
+             elif self.imag > 0:
+                return f"-{abs(self.real)} + {abs(self.imag)}i"
+        elif self.real > 0:
+            if self.imag > 0:
+                return f"{abs(self.real)} + {abs(self.imag)}i"
+            elif self.real > 0 and self.imag < 0:
+                 return f"{abs(self.real)} - {abs(self.imag)}i"
+        elif self.real == 0 :
+            if self.imag == 0:
+                return f"{abs(self.real)}"
+            elif self.imag < 0:
+                return f"-{abs(self.imag)}i"
+            elif  self.imag > 0:
+                return f"{abs(self.imag)}i"
+        if self.imag == 0:
+            if self.real < 0:
+                return f"-{abs(self.real)}"
+            elif self.real > 0:
+                return f"{abs(self.real)}"
         return f"0"
