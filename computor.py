@@ -93,23 +93,26 @@ def parser(input: str):
         # check if the variable already exist in dict and replace it in 
         # expression by his value
         dict1[varName.lower()] = expr
-        for key, val in dict1.items():
-            if val.replace(' ', '') == varName.replace(' ', '').lower() :
-                print("here")
-                dict1[key] = expr
-        # varInExpr = False
-        # for part in parts:
-        #     print(f" part = {part}")
-        #     if getval(part) != "not defined" :
-        #         varInExpr = True
-        #         repl = getval(part)
-        #         print(f"value {repl}")
-        #         expr = expr.replace(part, repl, len(part))
-        #         print(f"new_expr {expr}")
-        #         dict1[varName.lower()] = expr
+        for key, val in dict1.items() :
+            variabls = re.findall(r"(\w+)", val)
+            for var in variabls:
+              if  var.replace(' ', '').lower() ==  varName.replace(' ' , '').lower():
+                    val = val.replace(var, expr, len(var))
+                    dict1[key] = val   
+
+        varInExpr = False
+        for part in parts:
+            print(f" part = {part}")
+            if getval(part) != "not defined" :
+                varInExpr = True
+                repl = getval(part)
+                print(f"value {repl}")
+                expr = expr.replace(part, repl, len(part))
+                print(f"new_expr {expr}")
+                dict1[varName.lower()] = expr
         # #we need to check the value of variable before assignement
-        # if varInExpr == False:
-        #     dict1[varName.lower()] = expr
+        if varInExpr == False:
+            dict1[varName.lower()] = expr
         # replace_in_dict(expr, varName)
         value = getValue(varName, expr)
         # print(eval(value))
